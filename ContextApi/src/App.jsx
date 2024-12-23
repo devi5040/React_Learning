@@ -1,8 +1,9 @@
-import { useState } from 'react';
-
-import Header from './components/Header.jsx';
-import Shop from './components/Shop.jsx';
-import { DUMMY_PRODUCTS } from './dummy-products.js';
+import { useState } from "react";
+import { DUMMY_PRODUCTS } from "../dummy-products.js";
+import Product from "./Product.jsx";
+import Header from "./components/Header.jsx";
+import Shop from "./components/Shop.jsx";
+import { CartContext } from "./store/ShoppingCartContext.jsx";
 
 function App() {
   const [shoppingCart, setShoppingCart] = useState({
@@ -67,11 +68,20 @@ function App() {
 
   return (
     <>
-      <Header
-        cart={shoppingCart}
-        onUpdateCartItemQuantity={handleUpdateCartItemQuantity}
-      />
-      <Shop onAddItemToCart={handleAddItemToCart} />
+      {/* Only CartContext works for react 19+ versions */}
+      <CartContext.Provider>
+        <Header
+          cart={shoppingCart}
+          onUpdateCartItemQuantity={handleUpdateCartItemQuantity}
+        />
+        <Shop>
+          {DUMMY_PRODUCTS.map((product) => (
+            <li key={product.id}>
+              <Product {...product} onAddToCart={handleAddItemToCart} />
+            </li>
+          ))}
+        </Shop>
+      </CartContext.Provider>
     </>
   );
 }
