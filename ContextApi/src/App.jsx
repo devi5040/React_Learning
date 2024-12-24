@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { DUMMY_PRODUCTS } from "../dummy-products.js";
-import Product from "./Product.jsx";
+import { DUMMY_PRODUCTS } from "./dummy-products.js";
+import Product from "./components/Product.jsx";
 import Header from "./components/Header.jsx";
 import Shop from "./components/Shop.jsx";
 import { CartContext } from "./store/ShoppingCartContext.jsx";
@@ -66,10 +66,15 @@ function App() {
     });
   }
 
+  const ctxValue = {
+    items: shoppingCart.items,
+    addItemToCart: handleAddItemToCart,
+  };
+
   return (
     <>
       {/* Only CartContext works for react 19+ versions */}
-      <CartContext.Provider>
+      <CartContext.Provider value={ctxValue}>
         <Header
           cart={shoppingCart}
           onUpdateCartItemQuantity={handleUpdateCartItemQuantity}
