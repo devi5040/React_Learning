@@ -1,32 +1,14 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 export default function Login() {
+  const email = useRef();
+  const password = useRef();
 
-  // const [email, setEmail] = useState( '' );
-  // const [password, setPassword] = useState( '' );
-
-  // const handleEmailChange = ( event ) => {
-  //   setEmail( event.target.value );
-  // }
-  // const handlePasswordChange = ( event ) => {
-  //   setPassword( event.target.value );
-  // }
-
-  const [enteredValues, setEnteredValue] = useState( {
-    email: '',
-    password: ''
-  } )
-
-  const handleChange = ( identifier, event ) => {
-    setEnteredValue( prevValues => ( {
-      ...prevValues, [identifier]: event.target.value
-    } ) )
-  }
-
-
-  function handleSubmit( event ) {
+  const handleSubmit = ( event ) => {
     event.preventDefault();
-    console.log( 'Submitted' );
+    const enteredEmail = email.current.value;
+    const enteredPassword = email.current.value;
+    console.log( enteredEmail, enteredPassword )
   }
 
   return (
@@ -35,19 +17,18 @@ export default function Login() {
       <div className="control-row">
         <div className="control no-margin">
           <label htmlFor="email">Email</label>
-          <input id="email" type="email" name="email" onChange={ ( event ) => handleChange( "email", event ) } value={ enteredValues.email } />
+          <input id="email" type="email" name="email" ref={ email } />
         </div>
 
         <div className="control no-margin">
           <label htmlFor="password">Password</label>
-          <input id="password" type="password" name="password" onChange={ ( event ) => handleChange( "password", event ) } value={ enteredValues.password } />
+          <input id="password" type="password" name="password" ref={ password } />
         </div>
       </div>
 
       <p className="form-actions">
         <button className="button button-flat">Reset</button>
         <button className="button">Login</button>
-        {/* <button type="button" className="button" onClick={ handleSubmit }>Login</button> by default the type will be submit inside the form*/ }
       </p>
     </form>
   );
