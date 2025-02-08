@@ -15,11 +15,18 @@ export default function Login() {
     const [enteredValues, setEnteredValue] = useState( {
         email: '',
         password: ''
-    } )
+    } );
+    const [didEdit, setDidEdit] = useState( { email: false } )
+
+
+    const emailIsInvalid = didEdit.email && !enteredValues.email.includes( '@' );
 
     const handleChange = ( identifier, event ) => {
         setEnteredValue( prevValues => ( {
             ...prevValues, [identifier]: event.target.value
+        } ) );
+        setDidEdit( prevEdit => ( {
+            ...prevEdit, [identifier]: false
         } ) )
     }
 
@@ -29,13 +36,21 @@ export default function Login() {
         console.log( 'Submitted' );
     }
 
+    const handleEmailBlur = ( identifier ) => {
+        setDidEdit( prevEdit => ( {
+            ...prevEdit, [identifier]: true
+        } ) )
+    }
+
     return (
         <form onSubmit={ handleSubmit }>
             <h2>Login</h2>
             <div className="control-row">
                 <div className="control no-margin">
                     <label htmlFor="email">Email</label>
-                    <input id="email" type="email" name="email" onChange={ ( event ) => handleChange( "email", event ) } value={ enteredValues.email } />
+                    <input id="email" type="email" name="email"
+                        onBlur={ () => handleEmailBlur( 'email' ) } onChange={ ( event ) => handleChange( "email", event ) } value={ enteredValues.email } />
+                    <div className="control-error">{ emailIsInvalid && <p>Please enter valid email</p> }</div>
                 </div>
 
                 <div className="control no-margin">
@@ -45,7 +60,7 @@ export default function Login() {
             </div>
 
             <p className="form-actions">
-                <button className="button button-flat">Reset</button>
+                <button type="reset" className="button button-flat">Reset</button>
                 <button className="button">Login</button>
                 {/* <button type="button" className="button" onClick={ handleSubmit }>Login</button> by default the type will be submit inside the form*/ }
             </p>
