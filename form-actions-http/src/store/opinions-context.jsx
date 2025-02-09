@@ -1,62 +1,75 @@
 import { createContext, useEffect, useState } from 'react';
 
-export const OpinionsContext = createContext({
+export const OpinionsContext = createContext( {
   opinions: null,
-  addOpinion: (opinion) => {},
-  upvoteOpinion: (id) => {},
-  downvoteOpinion: (id) => {},
-});
+  addOpinion: ( opinion ) => { },
+  upvoteOpinion: ( id ) => { },
+  downvoteOpinion: ( id ) => { },
+} );
 
-export function OpinionsContextProvider({ children }) {
+export function OpinionsContextProvider( { children } ) {
   const [opinions, setOpinions] = useState();
 
-  useEffect(() => {
+  useEffect( () => {
     async function loadOpinions() {
-      const response = await fetch('http://localhost:3000/opinions');
+      const response = await fetch( 'http://localhost:3000/opinions' );
       const opinions = await response.json();
-      setOpinions(opinions);
+      setOpinions( opinions );
     }
 
     loadOpinions();
-  }, []);
+  }, [] );
 
-  async function addOpinion(enteredOpinionData) {
-    const response = await fetch('http://localhost:3000/opinions', {
+  async function addOpinion( enteredOpinionData ) {
+    const response = await fetch( 'http://localhost:3000/opinions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(enteredOpinionData),
-    });
+      body: JSON.stringify( enteredOpinionData ),
+    } );
 
-    if (!response.ok) {
+    if ( !response.ok )
+    {
       return;
     }
 
     const savedOpinion = await response.json();
-    setOpinions((prevOpinions) => [savedOpinion, ...prevOpinions]);
+    setOpinions( ( prevOpinions ) => [savedOpinion, ...prevOpinions] );
   }
 
-  function upvoteOpinion(id) {
-    setOpinions((prevOpinions) => {
-      return prevOpinions.map((opinion) => {
-        if (opinion.id === id) {
+  async function upvoteOpinion( id ) {
+    const response = await fetch( 'http://localhost:3000/opinions/' + id + '/upvote', { method: 'POST' } );
+    if ( !response.ok )
+    {
+      return;
+    }
+    setOpinions( ( prevOpinions ) => {
+      return prevOpinions.map( ( opinion ) => {
+        if ( opinion.id === id )
+        {
           return { ...opinion, votes: opinion.votes + 1 };
         }
         return opinion;
-      });
-    });
+      } );
+    } );
   }
 
-  function downvoteOpinion(id) {
-    setOpinions((prevOpinions) => {
-      return prevOpinions.map((opinion) => {
-        if (opinion.id === id) {
+  async function downvoteOpinion( id ) {
+    const response = await fetch( 'http://localhost:3000/opinions/' + id + '/downvote', { method: 'POST' } );
+    if ( !response.ok )
+    {
+      return;
+    }
+    setOpinions( ( prevOpinions ) => {
+      return prevOpinions.map( ( opinion ) => {
+        if ( opinion.id === id )
+        {
           return { ...opinion, votes: opinion.votes - 1 };
         }
         return opinion;
-      });
-    });
+      } );
+    } );
   }
 
   const contextValue = {
@@ -66,5 +79,5 @@ export function OpinionsContextProvider({ children }) {
     downvoteOpinion,
   };
 
-  return <OpinionsContext value={contextValue}>{children}</OpinionsContext>;
+  return <OpinionsContext value={ contextValue }>{ children }</OpinionsContext>;
 }
