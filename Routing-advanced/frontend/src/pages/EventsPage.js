@@ -1,27 +1,26 @@
-import React, {Fragment} from 'react';
-import {Link} from 'react-router-dom';
+import { useLoaderData } from 'react-router-dom';
+import EventsList from '../components/EventsList';
 
-const EVENTS = [
-  {id: 'e1', title: 'Events 1'},
-  {id: 'e2', title: 'Events 2'},
-  {id: 'e3', title: 'Events 3'},
-];
-
-function EventsPage () {
+function EventsPage() {
+  const events = useLoaderData();
   return (
-    <Fragment>
-      <h1>Events Page</h1>
-      <ul>
-        {EVENTS.map (event => {
-          return (
-            <li key={event.id}>
-              <Link to={`/events/${event.id}`}>{event.title}</Link>
-            </li>
-          );
-        })}
-      </ul>
-    </Fragment>
+    <>
+       <EventsList events={events}/>
+    </>
   );
 }
 
 export default EventsPage;
+
+export async function eventLoader() {
+  {
+    const response = await fetch ('http://localhost:8080/events');
+
+    if (!response.ok) {
+      //error
+    } else {
+      const resData = await response.json ();
+      return resData.events;
+    }
+  } //This function gets executed just before rendering the given element <EventsPage /> in this case. 
+}
