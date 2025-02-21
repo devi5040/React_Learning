@@ -1,11 +1,1 @@
-{
-  "events": [
-    {
-      "id": "e1",
-      "title": "A dummy event",
-      "date": "2023-02-22",
-      "image": "https://blog.hubspot.de/hubfs/Germany/Blog_images/Optimize_Marketing%20Events%20DACH%202021.jpg",
-      "description": "Join this amazing event and connect with fellow developers."
-    }
-  ]
-}
+{"events":[{"title":"new event","image":"https://www.dailypioneer.com/uploads/2025/story/images/big/just-forgive-and-move-on--can-t-worry-about-everything--ms-dhoni-2025-02-20.jpg","date":"2025-02-18","description":"ms dhoni speech!!!","id":"c1645b29-1147-4be2-8523-0074e867c0a7"},{"title":"test data","image":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCSYZwuXHWCD1uUd7dVyilhzRusSZZxI5-YQ&s","date":"2025-02-06","description":"an amazing event","id":"ceb76f21-71d9-47a9-8b94-3eda1d043145"}]}
